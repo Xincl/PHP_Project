@@ -24,8 +24,8 @@ if(!$conn){
 
 //查询数据是不是已经拥有该编号和姓名
 $sql = "select FID,FName,FSex,FAge,FKind,FPrison,FComeTime from prisoner where FID='$pid' or FName='$pname';";
-$sql1 = "INSERT INTO prisoner (FID, FName, FSex, FAge, FKind, FPrison, FComeTime, FWorkTime, FSalary, FFixTime) VALUES ('$pid','$pname','$psex','$page','$pkind','$pprison','$pcometime','0','0','$time')";
-$sql2 = "INSERT INTO prisoner (FID, FName, FSex, FAge, FKind, FPrison, FComeTime, FWorkTime, FSalary, FFixTime) VALUES ('$pid','$pname','$psex','$page','$pkind','$pprison','$pcometime','无法劳动','无法劳动','$time')";
+$sql1 = "INSERT INTO prisoner (FID, FName, FSex, FAge, FKind, FPrison, FComeTime, FWorkTime, FSalary, FFixTime, FWorkStart) VALUES ('$pid','$pname','$psex','$page','$pkind','$pprison','$pcometime','0','0','$time','0')";
+$sql2 = "INSERT INTO prisoner (FID, FName, FSex, FAge, FKind, FPrison, FComeTime, FWorkTime, FSalary, FFixTime, FWorkStart) VALUES ('$pid','$pname','$psex','$page','$pkind','$pprison','$pcometime','无法劳动','无法劳动','$time','0')";
 $res = mysqli_query($conn,$sql);
 $row = mysqli_num_rows($res);
 
@@ -46,6 +46,10 @@ if($row==0){
      $responseData['message'] = "此编号/此人已注册";
      echo json_encode($responseData);
 }
+
+//插入history表，记录
+$cel = "insert into history(FID,FName,FFixTime,FChangeTime) values('$pid','$pname','$time','$time');";
+$rip = mysqli_query($conn,$cel);
 
 $arr = array();
 $responseData['count'] = $i;
