@@ -12,7 +12,7 @@ if (!$conn) {
     exit;
 }
 if ($pid) {
-    $cel =  "select FID,FName,FAge,FComeTime,FWorkTime,FSalary from prisoner where FID= '$pid' or FName= '$pname';";
+    $cel =  "select FID,FName,FWorkStart,FWorkEnd,FReason from work_history where FID= '$pid' or FName= '$pname';";
     $rip = mysqli_query($conn, $cel);
     
     while($rew = mysqli_fetch_assoc($rip)){
@@ -20,7 +20,7 @@ if ($pid) {
         array_push($arr, $rew);     
     }
 } else {
-    $sql = "select FID,FName,FAge,FComeTime,FWorkTime,FSalary from prisoner;";
+    $sql = "select FID,FName,FWorkStart,FWorkEnd,FReason from work_history;";
     $res = mysqli_query($conn, $sql);
 
     while ($row = mysqli_fetch_assoc($res)) {

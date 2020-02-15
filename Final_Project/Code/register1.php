@@ -6,7 +6,7 @@ $responseData = array("code" => 0,"message" => "","count" => "","data" => ":");
 $re = $_POST['d'];
 $rec = json_decode($re,true);
 $time = $_POST['time'];
-$pid = $rec["id"];
+$pbid = $rec["id"];
 $pname = $rec["name"];
 $psex = $rec["sex"];
 $page = $rec["age"];
@@ -14,6 +14,8 @@ $pkind = $rec["kind"];
 $pprison = $rec["prison"];
 $pcometime = $rec["cometime"];
 $pallow = $rec['allow'];
+
+$pid = $pbid+mt_rand(0,50);
 
 if(!$conn){
     $responseData['code'] = 1;

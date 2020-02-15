@@ -28,11 +28,12 @@ $result = mysqli_query($conn,$cel);
 $row = mysqli_fetch_assoc($result);
 $BPhoneNum = $row['PhoneNum'];//获得未改变之前的手机号码
 $BEmail = $row['Email'];//获得未改变之前的邮箱
+
 $BPhoneNum2= $BPhoneNum."-->".$phoneNum;
 $BEmail2 = $BEmail."-->".$email;
 
 //将其插入历史记录表中，manager_history
-$his = "insert into manager_history (ID,Name,PhoneNum,Email,ChangeTime) values ('$id','$name','$BPhoneNum2','$BEmail2','$time');";
+$his = "insert into manager_history (ID,Name,PassWord,PhoneNum,Email,ChangeTime) values ('$id','$name','0','$BPhoneNum2','$BEmail2','$time');";
 $rip = mysqli_query($conn,$his);
 
 //修改管理人员原生表

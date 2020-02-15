@@ -29,6 +29,7 @@ if(count($v)==0){
     $responseData['code'] = 2;
     $responseData['message'] = "暂无服刑人员在进行工作";
     echo json_encode($responseData);
+    exit;
 }
 
 //将记录插入工作记录表中
@@ -57,3 +58,4 @@ echo json_encode($responseData);
 // echo json_encode($responseData);
 
 mysqli_close($conn);
+?>

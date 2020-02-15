@@ -21,14 +21,13 @@
         <li class="layui-nav-item">
           <a href="javascript:;">
             <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-            贤心
           </a>
           <dl class="layui-nav-child">
-            <dd><a href="">基本资料</a></dd>
-            <dd><a href="">安全设置</a></dd>
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item"><a href="">退了</a></li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退了</a></li>
       </ul>
     </div>
 
@@ -45,28 +44,28 @@
             </dl>
           </li>
           <li class="layui-nav-item"><a href="../page/salary.html" style="background-color:grey;">服刑人员报酬管理</a></li>
-          <li class="layui-nav-item"><a href="../page/salaryM.html">服刑人员报酬计算</a></li>
-          <li class="layui-nav-item"><a href="../page/transfer.html">服刑人员报酬转出</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
         </ul>
       </div>
     </div>
 
     <div class="layui-body">
       <!-- 内容主体区域 -->
-      <div style="padding: 15px;font-size: 15px;">
+      <div style="padding: 15px;font-size: 15px;width: 1022px;">
         <div class="layui-input-block" style="margin-right: 25px;margin-left: 65px;color: white;text-align: center;">
           <h2>服刑人员劳动报酬管理</h2>
         </div>
-        <div class="layui-input-block" style="margin-right: 25px;margin-left: 65px;">
+        <div class="layui-input-block"
+          style="margin-right: 25px;margin-left: 65px;background-color: white;width: 1022px;">
           <table class="layui-hide" id="test" lay-filter="test"></table>
         </div>
         <script type="text/html" id="toolbarDemo">
 
         <div class="layui-input-block" style="position: absolute;left: -90px;top:9px">
-            <input type="search" name="search" id="search" placeholder="输入姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
+            <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
         </div>  
         <div class="layui-input-block" lay-event="getsearch" style="position: absolute;left: 220px;top: 9px;">
-            <input id="do_search" type="submit" value="查找" class="layui-btn layui-btn-sm" lay-event="getsearch" style="width: 100px;text-align: center;"> 
+            <button id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</button>
         </div > 
         
         <div class="layui-btn-container" style="position:absolute;left:440px">
@@ -146,28 +145,20 @@
                   layer.msg('选中了：' + data.length + ' 个');
                   break;
                 case 'getsearch':
-                // var $ = layui.$, active = {
-                //   reload: function () {
-                //     var demoReload = $('#search');
+                  var search = document.getElementById("search").value;
+                  console.log(obj);
+                  table.reload('t', {
+                    method: 'POST'
+                    , where: {
+                      FID: search,
+                      FName: search
+                    }
+                    , page: {
+                      curr: 1 //重新从第 1 页开始
+                    }
+                  });
 
-                //     //执行重载
-                //     table.reload('t', {
-                //       page: {
-                //         curr: 1 //重新从第 1 页开始
-                //       }
-                //       , where: {
-                //         key: {
-                //           FID: demoReload.val()
-                //         }
-                //       }
-                //     }, 'data');
-                //   }
-                // };
-                // $('#do_search').on('click', function () {
-                //   var type = $(this).data('type');
-                //   active[type] ? active[type].call(this) : '';
-                // });
-                // break;
+                  break;
                 case 'getStartWork':
                   var da = checkStatus.data;
                   var time = Math.round(new Date() / 1000);
@@ -236,6 +227,7 @@
             //监听行工具事件
             table.on('tool(test)', function (obj) {
               var data = obj.data;
+              var time = Math.round(new Date() / 1000);
               var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
               var mes = "身体不适";
               console.log(data);
@@ -244,14 +236,15 @@
                   formType: 2
                   , value: mes
                 }, function (value, index) {
-                  var r = "请假理由："+value;
+                  var r = "请假理由：" + value;
                   $.ajax({
                     method: "POST",
                     url: "../Code/reason.php",
                     data: {
                       data,
                       r,
-                      time2
+                      time2,
+                      time
                     },
                     success: function (result) {
                       var mes = JSON.parse(result);
@@ -264,7 +257,7 @@
                   layer.close(index);
                 });
 
-              } 
+              }
             });
           });
         </script>
@@ -320,6 +313,19 @@
     //JavaScript代码区域
     layui.use('element', function () {
       var element = layui.element;
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      })
 
     });
   </script>
