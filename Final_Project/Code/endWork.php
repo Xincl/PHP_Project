@@ -32,9 +32,17 @@ if(count($v)==0){
     exit;
 }
 
+//查询人员插入操作人
+$oop = "select * from manager where ID= '$man' or Name= '$man';";
+$roop = mysqli_query($conn,$oop);
+$riip = mysqli_fetch_assoc($roop);
+$oid = $riip['ID'];
+$oname = $riip['Name'];
+$o = " , ".$oid.":".$oname;
+
 //将记录插入工作记录表中
 for($i=0;$i<count($v);$i++){
-   $cel = "UPDATE work_history set FWorkEnd= '$time2' where FID='$v[$i]' and FWorkEnd= '未结束劳动' and FReason= '无请假';"; 
+   $cel = "UPDATE work_history set FWorkEnd='$time2',FOperate= FOperate+'$o'  where (FID='$v[$i]' and FWorkEnd='未结束劳动') and FReason='无请假';"; 
    $rip = mysqli_query($conn,$cel);
 }
 

@@ -25,10 +25,12 @@ if (!$conn) {
 }
 
 //查询之前数据库
-$cel = "select PassWord from manager where ID = '$id' or Name= '$id';";
+$cel = "select ID,Name,PassWord from manager where ID = '$id' or Name= '$id';";
 $result = mysqli_query($conn, $cel);
 $row = mysqli_fetch_assoc($result);
 $Bpwd = $row['PassWord']; //获得未改变之前的密码
+$rid = $row['ID'];
+$rname = $row['Name'];
 
 if ($pwdO != $Bpwd) {
     $responseData['code'] = 2;
@@ -50,9 +52,10 @@ if($Bpwd == $pwdN){
 }
 //记录表写法
 $Bpwd2 = $Bpwd . "-->" . $pwdN;
+$operate = $rid.":".$rname;
 
 //将其插入历史记录表中，manager_history
-$his = "insert into manager_history (ID,Name,PassWord,PhoneNum,Email,ChangeTime) values ('$id','$name','$Bpwd2','0','0','$time');";
+$his = "insert into manager_history (ID,Name,PassWord,PhoneNum,Email,Super,ChangeTime,Operate) values ('$rid','$rname','$Bpwd2','无修改','无修改','无修改','$time','$operate');";
 $rip = mysqli_query($conn, $his);
 
 //修改管理人员原生表

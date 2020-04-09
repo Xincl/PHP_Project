@@ -10,7 +10,7 @@
     <script src="../jquery-3.4.1.js"></script>
 </head>
 
-<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+<body class="layui-layout-body" style="background-image: url('../images/bg.jpg');">
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
             <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
@@ -23,6 +23,7 @@
                     <dl class="layui-nav-child">
                         <dd><a href="../page/uinformation.html">基本资料</a></dd>
                         <dd><a href="../page/secure.html">安全设置</a></dd>
+                        <dd id="check"><a>进入后台</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
@@ -137,7 +138,7 @@
             </script>
 
 
-            <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+            <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: left;height: 35px;">
                 <!-- 底部固定区域 -->
                 Copy Right @xincl7@163.com
             </div>
@@ -160,7 +161,30 @@
                         }
                     })
                 })
-                })
+
+
+                //设置监听进入后台
+                $('#check').on('click', function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "../Code/check.php",
+                        data: {},
+                        success: function (result) {
+                            var obj = JSON.parse(result);
+                            if (obj.code == '3') {
+                                window.location.href = '../page/backstage.html';
+                            } else if (obj.code == '2') {
+                                alert("无权限登陆后台");
+                                window.location.href = '../page/Home.html';
+                            }
+
+                        },
+                        error: function (result) {
+
+                        }
+                    })
+                });
+            })
         </script>
 </body>
 

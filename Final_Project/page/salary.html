@@ -13,21 +13,22 @@
   <script src="../jquery-3.4.1.js"></script>
 </head>
 
-<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+<body class="layui-layout-body" style="background-image: url('../images/bg.jpg');">
   <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
       <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
       <ul class="layui-nav layui-layout-right">
         <li class="layui-nav-item">
           <a href="javascript:;">
-            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">管理员
           </a>
           <dl class="layui-nav-child">
             <dd><a href="../page/uinformation.html">基本资料</a></dd>
             <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id="check"><a>进入后台</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item exit"><a href="../page/login.html">退了</a></li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
       </ul>
     </div>
 
@@ -227,11 +228,11 @@
             //监听行工具事件
             table.on('tool(test)', function (obj) {
               var data = obj.data;
-              var time = Math.round(new Date() / 1000);
-              var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
               var mes = "身体不适";
               console.log(data);
               if (obj.event === 'reason') {
+                var endTime = Math.round(new Date() / 1000);
+                var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
                 layer.prompt({
                   formType: 2
                   , value: mes
@@ -244,11 +245,15 @@
                       data,
                       r,
                       time2,
-                      time
+                      endTime
                     },
                     success: function (result) {
                       var mes = JSON.parse(result);
-                      layer.msg(mes.message, { icon: 1 });
+                      if (mes.code == 2) {
+                        layer.msg(mes.message, { icon: 2 });
+                      } else if (mes.code == 3) {
+                        layer.msg(mes.message, { icon: 1 });
+                      }
                     },
                     error: function (msg) {
                       alert(result);
@@ -275,7 +280,7 @@
               console.log(data);
               $.ajax({
                 method: "POST",
-                url: "../Code/workTimeChange.PHP",
+                url: "../Code/workTimeChange.php",
                 data: {
                   value: value,
                   data: data,
@@ -283,6 +288,7 @@
                   time: time
                 },
                 success: function (result) {
+                  table.reload('t');
                   var o = JSON.parse(result);
                   if (o.code == '1') {
                     layer.msg(o.message, { icon: 2 });
@@ -303,7 +309,7 @@
     </div>
 
 
-    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: left;height: 35px;">
       <!-- 底部固定区域 -->
       Copy Right @xincl7@163.com
     </div>
@@ -327,6 +333,27 @@
         })
       })
 
+      //设置监听进入后台
+      $('#check').on('click', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == '3') {
+              window.location.href = '../page/backstage.html';
+            } else if (obj.code == '2') {
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
     });
   </script>
 </body>

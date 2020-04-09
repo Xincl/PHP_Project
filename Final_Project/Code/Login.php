@@ -5,7 +5,7 @@ require_once 'model.php';
 session_start();
 $name=$_POST['username'];
 $pwd=$_POST['password'];
-$sql="select Name,PassWord from manager where (Name='$name' AND PassWord='$pwd') or (ID= '$name' and PassWord= '$pwd');";
+$sql="select Name,PassWord,Super from manager where (Name='$name' AND PassWord='$pwd') or (ID= '$name' and PassWord= '$pwd');";
 $result=mysqli_query($conn,$sql);
 $row=mysqli_num_rows($result);
 

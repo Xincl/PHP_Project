@@ -1,7 +1,9 @@
 <?php
 //数据库连接
+session_start();
 require_once 'model.php';
 $responseData = array("code" => 0,"message" => "","count" => "","data" => ":");
+$man = $_SESSION['name'];
 
 //接受开始按钮传递来的数据
 $re = $_POST['data'];
@@ -36,6 +38,14 @@ if(count($v)==0){
   exit;
 }
 
+//查询人员插入操作人
+$oop = "select * from manager where ID= '$man' or Name= '$man';";
+$roop = mysqli_query($conn,$oop);
+$riip = mysqli_fetch_assoc($roop);
+$oid = $riip['ID'];
+$oname = $riip['Name'];
+$o = $oid.":".$oname;
+
 //判断勾选的人员是否有已经在工作
 for($i=0;$i<count($v);$i++){
   $seel = "select FID,FName,FWorkStart from prisoner where FWorkStart != 0 and FID = '$v[$i]';";
@@ -53,7 +63,7 @@ for($i=0;$i<count($v);$i++){
 
 //将记录插入工作记录表中
 for($i=0;$i<count($v);$i++){
-  $cel = "insert into work_history (FID,FName,FWorkStart,FWorkEnd,FReason) values('$v[$i]','$n[$i]','$time2','未结束劳动','无请假');";
+  $cel = "insert into work_history (FID,FName,FWorkStart,FWorkEnd,FReason,FOperate) values('$v[$i]','$n[$i]','$time2','未结束劳动','无请假','$o');";
   $rip = mysqli_query($conn,$cel);
 }
 
