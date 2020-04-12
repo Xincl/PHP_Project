@@ -54,7 +54,7 @@
     <div class="layui-body">
       <!-- 内容主体区域 -->
       <div style="padding: 15px;font-size: 15px;width: 892px;">
-        <div class="layui-input-block" style="margin-right: 25px;margin-left:35%;color: white;text-align: center;">
+        <div class="layui-input-block" style="margin-right: 25px;margin-left:25%;color: white;text-align: center;">
           <h2>服刑人员工作记录</h2>
         </div>
         <div class="layui-input-block"
@@ -67,7 +67,7 @@
             <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
         </div>  
         <div class="layui-input-block" lay-event="getsearch" style="position: absolute;left: 220px;top: 9px;">
-            <button id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</button>
+            <div id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</div>
         </div > 
         
         <div class="layui-btn-container" style="position:absolute;left:440px">
@@ -118,14 +118,15 @@
                   var search = document.getElementById("search").value;
                   console.log(obj);
                   table.reload('t', {
-                    method: 'POST'
+                    method: 'GET'
                     , where: {
                       FID: search,
-                      FName: search
+                      FName: search,
                     }
                     , page: {
                       curr: 1 //重新从第 1 页开始
                     }
+                    ,limit: '10',
                   });
 
                   break;

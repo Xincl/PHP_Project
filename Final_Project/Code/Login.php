@@ -1,3 +1,4 @@
+
 <?php
 //数据库连接
 require_once 'model.php';

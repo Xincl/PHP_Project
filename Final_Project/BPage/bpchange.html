@@ -74,7 +74,7 @@
                   var search = document.getElementById("search").value;
                   console.log(obj);
                   table.reload('t', {
-                    method: 'POST'
+                    method: 'GET'
                     , where: {
                       FID: search,
                       FName: search
@@ -82,6 +82,7 @@
                     , page: {
                       curr: 1 //重新从第 1 页开始
                     }
+                    ,limit: '10'
                   });
 
                   break;
